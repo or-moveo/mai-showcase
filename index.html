@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M.ai | AI Strategy & Agentic Platforms</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@500;600;700;800&family=Assistant:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #201f87;
+      --primary-light: hsl(232, 47%, 95%);
+      --gradient-start: #355872;
+      --gradient-end: #7AAACE;
+      --gradient: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: hsl(220, 13%, 91%);
+      --text: hsl(232, 47%, 15%);
+      --text-muted: hsl(220, 9%, 46%);
+      --shadow-card: -6px 4px 12px rgba(0,0,0,0.15);
+      --shadow-card-hover: -8px 6px 16px rgba(0,0,0,0.2);
+      --radius: 16px;
+      --radius-sm: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Assistant', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1, h2, h3, h4, .heading-font {
+      font-family: 'Urbanist', 'Assistant', sans-serif;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* === NAV === */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248, 250, 252, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .nav.scrolled {
+      border-bottom-color: var(--border);
+      box-shadow: 0 1px 12px rgba(0,0,0,0.06);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .nav-logo img {
+      height: 36px;
+      width: auto;
+    }
+    .nav-links {
+      display: none;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Urbanist', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--primary); }
+
+    /* Mobile menu */
+    .nav-toggle {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 1px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .mobile-menu {
+      display: none;
+      padding: 16px 24px 24px;
+      background: rgba(248, 250, 252, 0.98);
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-menu a {
+      display: block;
+      padding: 12px 0;
+      font-family: 'Urbanist', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+
+    @media (min-width: 1024px) {
+      .nav-links { display: flex; }
+      .nav-toggle { display: none; }
+    }
+
+    /* === HERO === */
+    .hero {
+      padding: 80px 0 60px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .hero-content { max-width: 600px; }
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    .hero h1 .gradient-text {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 32px;
+      max-width: 520px;
+    }
+    .hero-visual {
+      display: none;
+      position: relative;
+      height: 400px;
+      justify-content: center;
+      align-items: center;
+    }
+    .hero-orb {
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: var(--gradient);
+      opacity: 0.15;
+      filter: blur(60px);
+      position: absolute;
+    }
+    .hero-orb-inner {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: var(--gradient);
+      opacity: 0.3;
+      filter: blur(30px);
+      position: absolute;
+      animation: float 6s ease-in-out infinite;
+    }
+    .hero-icon-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(3, 64px);
+      gap: 16px;
+    }
+    .hero-icon-cell {
+      width: 64px;
+      height: 64px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-card);
+    }
+    .hero-icon-cell svg {
+      width: 28px;
+      height: 28px;
+      color: var(--gradient-start);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @media (min-width: 1024px) {
+      .hero {
+        grid-template-columns: 1fr 1fr;
+        padding: 100px 0 80px;
+      }
+      .hero h1 { font-size: 3.5rem; }
+      .hero-visual { display: flex; }
+    }
+
+    /* === STATS === */
+    .stats {
+      background:
+        radial-gradient(ellipse 80% 50% at 10% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 60% at 90% 30%, rgba(56, 189, 248, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 80% at 50% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
+        linear-gradient(135deg, #0f0e2e 0%, #1a1960 40%, #201f87 70%, #1e1b4b 100%);
+      padding: 48px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .stats::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.15) 0%, transparent 100%),
+        radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.1) 0%, transparent 100%),
+        radial-gradient(1px 1px at 80% 20%, rgba(255,255,255,0.12) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 40% 80%, rgba(99,102,241,0.3) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 70% 40%, rgba(56,189,248,0.25) 0%, transparent 100%),
+        radial-gradient(1px 1px at 10% 60%, rgba(168,85,247,0.2) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 90%, rgba(255,255,255,0.08) 0%, transparent 100%);
+      pointer-events: none;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 8px;
+    }
+    .stat-number {
+      font-family: 'Urbanist', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .stat-label {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      margin-top: 4px;
+    }
+    .stat-divider {
+      display: none;
+      width: 1px;
+      background: rgba(255,255,255,0.15);
+      align-self: stretch;
+    }
+
+    @media (min-width: 640px) {
+      .stats-grid { grid-template-columns: repeat(4, 1fr); }
+      .stat-number { font-size: 3rem; }
+    }
+
+    /* === SECTIONS === */
+    .section {
+      padding: 80px 0;
+    }
+    .section-label {
+      display: inline-block;
+      font-family: 'Urbanist', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gradient-start);
+      margin-bottom: 12px;
+    }
+    .section-heading {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+    .section-subtitle {
+      font-size: 17px;
+      color: var(--text-muted);
+      max-width: 560px;
+      line-height: 1.6;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .section-header .section-subtitle {
+      margin: 0 auto;
+    }
+
+    @media (min-width: 1024px) {
+      .section-heading { font-size: 2.75rem; }
+    }
+
+    /* === SERVICES === */
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .service-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      box-shadow: var(--shadow-card);
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .service-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-card-hover);
+      transform: translateY(-3px);
+    }
+    .service-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--gradient);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 8px rgba(53, 88, 114, 0.25);
+    }
+    .service-icon svg {
+      width: 28px;
+      height: 28px;
+      color: #fff;
+      stroke-width: 2;
+    }
+    .service-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .service-card p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    @media (min-width: 640px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .services-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* === CASE STUDIES === */
+    .cases-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .case-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      box-shadow: var(--shadow-card);
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .case-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-card-hover);
+      transform: translateY(-3px);
+    }
+    .case-tag {
+      display: inline-block;
+      font-family: 'Urbanist', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .case-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+    .case-label {
+      font-family: 'Urbanist', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      margin-top: 12px;
+    }
+    .case-label:first-of-type { margin-top: 0; }
+    .case-text {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .case-metrics {
+      display: flex;
+      gap: 16px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .metric {
+      flex: 1;
+      text-align: center;
+    }
+    .metric-value {
+      font-family: 'Urbanist', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+    .metric-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    @media (min-width: 1024px) {
+      .cases-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* === PROCESS / AI JOURNEY === */
+    .process-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .process-step {
+      text-align: center;
+    }
+    .step-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--gradient);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 8px rgba(53, 88, 114, 0.25);
+    }
+    .step-icon svg {
+      width: 26px;
+      height: 26px;
+      color: #fff;
+      stroke-width: 2.2;
+    }
+    .process-step h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+      letter-spacing: -0.01em;
+    }
+    .step-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+    .step-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      box-shadow: var(--shadow-card);
+      text-align: left;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .step-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-card-hover);
+    }
+    .step-card ul {
+      list-style: none;
+      padding: 0;
+    }
+    .step-card li {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.6;
+      padding-left: 18px;
+      position: relative;
+      margin-bottom: 8px;
+    }
+    .step-card li:last-child { margin-bottom: 0; }
+    .step-card li::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--gradient-end);
+      border-radius: 50%;
+      position: absolute;
+      left: 0;
+      top: 10px;
+    }
+    .process-arrow {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding-top: 36px;
+    }
+    .process-arrow svg {
+      width: 24px;
+      height: 24px;
+      color: var(--gradient-end);
+      opacity: 0.6;
+    }
+    .process-description {
+      text-align: center;
+      margin-top: 48px;
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+    .process-description strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    @media (min-width: 1024px) {
+      .process-grid {
+        grid-template-columns: 1fr auto 1fr auto 1fr;
+        gap: 0;
+      }
+      .process-arrow { display: flex; }
+    }
+
+    /* === CLIENTS === */
+    .clients-label {
+      font-family: 'Urbanist', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gradient-start);
+      margin-bottom: 12px;
+      margin-top: 32px;
+    }
+    .clients-label:first-of-type { margin-top: 0; }
+    .clients-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .client-logo {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 1;
+      box-shadow: var(--shadow-card);
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+    }
+    .client-logo:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-card-hover);
+      transform: translateY(-2px);
+    }
+    .client-logo img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: grayscale(30%);
+      opacity: 0.85;
+      transition: filter 0.3s, opacity 0.3s;
+    }
+    .client-logo:hover img {
+      filter: grayscale(0%);
+      opacity: 1;
+    }
+
+    @media (min-width: 640px) {
+      .clients-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .clients-grid { grid-template-columns: repeat(8, 1fr); }
+    }
+
+
+
+
+    /* === ANIMATIONS === */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .stagger-1 { transition-delay: 0.05s; }
+    .stagger-2 { transition-delay: 0.1s; }
+    .stagger-3 { transition-delay: 0.15s; }
+    .stagger-4 { transition-delay: 0.2s; }
+    .stagger-5 { transition-delay: 0.25s; }
+    .stagger-6 { transition-delay: 0.3s; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo"><img src="assets/mai-logo.png" alt="M.ai" /></a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero container">
+    <div class="hero-content">
+      <h1 class="fade-up">Turning AI Strategy<br/>Into <span class="gradient-text">Working Products</span></h1>
+      <p class="hero-subtitle fade-up stagger-1">M.ai is the AI solutions arm of Moveo.group, a technology company focused on building intelligent systems that transform how organizations operate.</p>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-orb"></div>
+      <div class="hero-orb-inner"></div>
+      <div class="hero-icon-grid">
+        <div class="hero-icon-cell">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" /></svg>
+        </div>
+        <div class="hero-icon-cell">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" /></svg>
+        </div>
+        <div class="hero-icon-cell">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+        </div>
+        <div class="hero-icon-cell">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 0 1-3-3m3 3a3 3 0 1 0 0 6h13.5a3 3 0 1 0 0-6m-16.5-3a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3m-19.5 0a4.5 4.5 0 0 1 .9-2.7L5.737 5.1a3.375 3.375 0 0 1 2.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 0 1 .9 2.7m0 0a3 3 0 0 1-3 3m0 3h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Zm-3 6h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Z" /></svg>
+        </div>
+        <div class="hero-icon-cell" style="border-color: var(--gradient-end); box-shadow: 0 0 0 2px rgba(122,170,206,0.15), var(--shadow-card);">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" /></svg>
+        </div>
+        <div class="hero-icon-cell">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg>
+        </div>
+        <div class="hero-icon-cell">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg>
+        </div>
+        <div class="hero-icon-cell">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" /></svg>
+        </div>
+        <div class="hero-icon-cell">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" /></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats" id="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item fade-up">
+          <div class="stat-number" data-target="11" data-suffix="+">0</div>
+          <div class="stat-label">Years of Experience</div>
+        </div>
+        <div class="stat-item fade-up stagger-1">
+          <div class="stat-number" data-target="820" data-suffix="+">0</div>
+          <div class="stat-label">Clients Worldwide</div>
+        </div>
+        <div class="stat-item fade-up stagger-2">
+          <div class="stat-number" data-target="85" data-suffix="%">0</div>
+          <div class="stat-label">Return Clients</div>
+        </div>
+        <div class="stat-item fade-up stagger-3">
+          <div class="stat-number" data-target="1800" data-suffix="+" data-prefix="">0</div>
+          <div class="stat-label">Projects Delivered</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section" id="services">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label fade-up">Our Capabilities</div>
+        <h2 class="section-heading fade-up stagger-1">What We Do</h2>
+        <p class="section-subtitle fade-up stagger-2">Helping organizations turn strategy into working products</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card fade-up stagger-1">
+          <div class="service-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" /></svg>
+          </div>
+          <h3>External & Internal Copilots</h3>
+          <p>AI assistants that augment your team's capabilities and serve customers 24/7 with intelligent, contextual interactions.</p>
+        </div>
+        <div class="service-card fade-up stagger-2">
+          <div class="service-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 0 1-3-3m3 3a3 3 0 1 0 0 6h13.5a3 3 0 1 0 0-6m-16.5-3a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3m-19.5 0a4.5 4.5 0 0 1 .9-2.7L5.737 5.1a3.375 3.375 0 0 1 2.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 0 1 .9 2.7m0 0a3 3 0 0 1-3 3m0 3h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Zm-3 6h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Z" /></svg>
+          </div>
+          <h3>AI Infrastructure & Architecture</h3>
+          <p>Designing and building the technical backbone for production AI, from model orchestration and data pipelines to deployment.</p>
+        </div>
+        <div class="service-card fade-up stagger-3">
+          <div class="service-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+          </div>
+          <h3>Workflow Automation</h3>
+          <p>End-to-end workflow automation across teams, using intelligent agents that handle complex business processes autonomously.</p>
+        </div>
+        <div class="service-card fade-up stagger-4">
+          <div class="service-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" /></svg>
+          </div>
+          <h3>Smart Dashboards</h3>
+          <p>Intelligent analytics with actionable insights, turning complex data into clear, real-time business intelligence.</p>
+        </div>
+        <div class="service-card fade-up stagger-5">
+          <div class="service-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg>
+          </div>
+          <h3>AI Governance</h3>
+          <p>Comprehensive AI roadmaps with clear policies, risk frameworks, and adoption strategies for responsible deployment.</p>
+        </div>
+        <div class="service-card fade-up stagger-6">
+          <div class="service-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg>
+          </div>
+          <h3>Team Enablement</h3>
+          <p>Training and change management to ensure your teams maximize value from AI investments in their daily work.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASE STUDIES -->
+  <section class="section" id="case-studies" style="background: #fff;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label fade-up">Proven Results</div>
+        <h2 class="section-heading fade-up stagger-1">Success Stories</h2>
+        <p class="section-subtitle fade-up stagger-2">Real results from our AI implementations</p>
+      </div>
+      <div class="cases-grid">
+        <div class="case-card fade-up stagger-1">
+          <span class="case-tag">Retail</span>
+          <h3>Leading Retailer</h3>
+          <div class="case-label">Challenge</div>
+          <p class="case-text">Scaling customer support without losing a personal, consistent experience</p>
+          <div class="case-label">Solution</div>
+          <p class="case-text">Smart WhatsApp agent serving all customers with a visionary experience</p>
+          <div class="case-metrics">
+            <div class="metric">
+              <div class="metric-value">70%</div>
+              <div class="metric-label">Faster Response</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">2x</div>
+              <div class="metric-label">Conversations</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">24/7</div>
+              <div class="metric-label">Availability</div>
+            </div>
+          </div>
+        </div>
+        <div class="case-card fade-up stagger-2">
+          <span class="case-tag">Insurance</span>
+          <h3>Enterprise Insurer</h3>
+          <div class="case-label">Challenge</div>
+          <p class="case-text">High volume customer inquiries overwhelming support</p>
+          <div class="case-label">Solution</div>
+          <p class="case-text">Intelligent copilot for customer service agents</p>
+          <div class="case-metrics">
+            <div class="metric">
+              <div class="metric-value">60%</div>
+              <div class="metric-label">Reduced Handle Time</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">4.8/5</div>
+              <div class="metric-label">Satisfaction</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">3x</div>
+              <div class="metric-label">Productivity</div>
+            </div>
+          </div>
+        </div>
+        <div class="case-card fade-up stagger-3">
+          <span class="case-tag">Technology</span>
+          <h3>Major Tech Company</h3>
+          <div class="case-label">Challenge</div>
+          <p class="case-text">Low AI tool adoption and inconsistent usage across teams</p>
+          <div class="case-label">Solution</div>
+          <p class="case-text">AI adoption strategy with hands-on enablement and usage optimization</p>
+          <div class="case-metrics">
+            <div class="metric">
+              <div class="metric-value">85%</div>
+              <div class="metric-label">AI Adoption</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">3x</div>
+              <div class="metric-label">Productivity</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">40%</div>
+              <div class="metric-label">Cost Reduction</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI JOURNEY / PROCESS -->
+  <section class="section" id="process">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label fade-up">Our Methodology</div>
+        <h2 class="section-heading fade-up stagger-1">From Vision to Value</h2>
+        <p class="section-subtitle fade-up stagger-2">Our End-to-End AI Journey</p>
+      </div>
+      <div class="process-grid">
+        <div class="process-step fade-up stagger-1">
+          <div class="step-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+          </div>
+          <h3>Discovery</h3>
+          <div class="step-subtitle">Defining the North Star</div>
+          <div class="step-card">
+            <ul>
+              <li>Identifying high-ROI business opportunities</li>
+              <li>Data readiness & feasibility assessment</li>
+              <li>Tailored AI roadmap construction</li>
+            </ul>
+          </div>
+        </div>
+        <div class="process-arrow">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
+        </div>
+        <div class="process-step fade-up stagger-2">
+          <div class="step-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" /></svg>
+          </div>
+          <h3>Development</h3>
+          <div class="step-subtitle">Building Production-Grade AI</div>
+          <div class="step-card">
+            <ul>
+              <li>Full-stack implementation</li>
+              <li>Seamless integration into existing ecosystems</li>
+              <li>Focused AI-UX for intuitive human-machine interaction</li>
+            </ul>
+          </div>
+        </div>
+        <div class="process-arrow">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
+        </div>
+        <div class="process-step fade-up stagger-3">
+          <div class="step-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" /></svg>
+          </div>
+          <h3>Optimization & Scaling</h3>
+          <div class="step-subtitle">Evolving with Data</div>
+          <div class="step-card">
+            <ul>
+              <li>Continuous monitoring and drift prevention</li>
+              <li>Model fine-tuning based on real-world feedback</li>
+              <li>Scaling capabilities as your business grows</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p class="process-description fade-up">
+        Our work starts with <strong>deep diagnostics</strong> and ends with <strong>scalable, high-impact solutions</strong> built to last.
+      </p>
+    </div>
+  </section>
+
+  <!-- CLIENTS -->
+  <section class="section" id="clients" style="background: #fff;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label fade-up">Our Clients</div>
+        <h2 class="section-heading fade-up stagger-1">Trusted By Industry Leaders</h2>
+      </div>
+      <div class="clients-label fade-up">Brands & Corporations</div>
+      <div class="clients-grid fade-up stagger-1">
+        <div class="client-logo"><img src="logos/samsung-logo.svg" alt="Samsung" /></div>
+        <div class="client-logo"><img src="logos/pwc-logo.png" alt="PwC" /></div>
+        <div class="client-logo"><img src="logos/nestle-logo.png" alt="Nestl&eacute;" /></div>
+        <div class="client-logo"><img src="logos/unilever-logo.png" alt="Unilever" /></div>
+        <div class="client-logo"><img src="logos/att-logo.png" alt="AT&amp;T" /></div>
+        <div class="client-logo"><img src="logos/aig-logo.png" alt="AIG" /></div>
+        <div class="client-logo"><img src="logos/bank-hapoalim-logo.svg" alt="Bank Hapoalim" /></div>
+        <div class="client-logo"><img src="logos/leumi-logo.png" alt="Leumi" /></div>
+        <div class="client-logo"><img src="logos/clalit-logo.svg" alt="Clalit" /></div>
+        <div class="client-logo"><img src="logos/maccabi-logo.png" alt="Maccabi" /></div>
+        <div class="client-logo"><img src="logos/iai-logo.png" alt="IAI" /></div>
+        <div class="client-logo"><img src="logos/elbit-systems-logo.png" alt="Elbit Systems" /></div>
+        <div class="client-logo"><img src="logos/ministry-of-defense-logo.png" alt="Ministry of Defense" /></div>
+        <div class="client-logo"><img src="logos/idf-logo.png" alt="IDF" /></div>
+        <div class="client-logo"><img src="logos/cal-logo.png" alt="Cal" /></div>
+        <div class="client-logo"><img src="logos/isracard-logo.svg" alt="Isracard" /></div>
+      </div>
+      <div class="clients-label fade-up">Startups & Scale-ups</div>
+      <div class="clients-grid fade-up stagger-1">
+        <div class="client-logo"><img src="logos/monday-logo.png" alt="monday.com" /></div>
+        <div class="client-logo"><img src="logos/myheritage.png" alt="MyHeritage" /></div>
+        <div class="client-logo"><img src="logos/via.png" alt="Via" /></div>
+        <div class="client-logo"><img src="logos/rapyd.png" alt="Rapyd" /></div>
+        <div class="client-logo"><img src="logos/honeybook.png" alt="HoneyBook" /></div>
+        <div class="client-logo"><img src="logos/calendly.png" alt="Calendly" /></div>
+        <div class="client-logo"><img src="logos/atera.png" alt="Atera" /></div>
+        <div class="client-logo"><img src="logos/artlist.png" alt="Artlist" /></div>
+        <div class="client-logo"><img src="logos/tomorrow.svg" alt="Tomorrow.io" /></div>
+        <div class="client-logo"><img src="logos/bringg-logo.png" alt="Bringg" /></div>
+        <div class="client-logo"><img src="logos/paragon-logo.png" alt="Paragon" /></div>
+        <div class="client-logo"><img src="logos/anyword-logo.svg" alt="Anyword" /></div>
+        <div class="client-logo"><img src="logos/explorium-logo.svg" alt="Explorium" /></div>
+        <div class="client-logo"><img src="logos/easysend.png" alt="EasySend" /></div>
+        <div class="client-logo"><img src="logos/orca-ai-logo.png" alt="Orca AI" /></div>
+        <div class="client-logo"><img src="logos/ontopo-logo.svg" alt="Ontopo" /></div>
+      </div>
+    </div>
+  </section>
+
+
+  <script>
+    // Intersection Observer for fade-in animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Nav shadow on scroll
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Counter animation for stats
+    let countersAnimated = false;
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !countersAnimated) {
+          countersAnimated = true;
+          document.querySelectorAll('.stat-number[data-target]').forEach(el => {
+            const target = parseInt(el.dataset.target);
+            const suffix = el.dataset.suffix || '';
+            const prefix = el.dataset.prefix !== undefined ? el.dataset.prefix : '';
+            const duration = 2000;
+            const start = performance.now();
+
+            function update(now) {
+              const elapsed = now - start;
+              const progress = Math.min(elapsed / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              const current = Math.round(eased * target);
+              const formatted = target >= 1000 ? current.toLocaleString() : current;
+              el.textContent = prefix + formatted + suffix;
+              if (progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+
+    statsObserver.observe(document.getElementById('stats'));
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
